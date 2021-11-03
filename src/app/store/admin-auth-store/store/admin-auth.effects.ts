@@ -20,7 +20,7 @@ export class AdminAuthEffects {
     }).pipe(
       map(loginSuccessData => LoginSuccess(loginSuccessData)),
       catchError(error => of(
-        LoginFailed({serverError: error?.error?.message || 'Something went wrong!' })
+        LoginFailed({serverError: error.message || 'Something went wrong!' })
       ))
     ))
   ));
