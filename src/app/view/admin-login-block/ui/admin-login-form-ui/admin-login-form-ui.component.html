@@ -8,14 +8,14 @@
 
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput formControlName="password" />
+    <input matInput type="password" formControlName="password" />
     <mat-error *ngIf="formGroup.hasError('required', 'password')">Password is required</mat-error>
   </mat-form-field>
 
   <button
     mat-raised-button
     color="primary"
-    [disabled]="formGroup.invalid || !!formError"
+    [disabled]="loading || formGroup.invalid || !!formError"
   >Sign in</button>
 
   <mat-error *ngIf="formError">{{ formError }}</mat-error>
