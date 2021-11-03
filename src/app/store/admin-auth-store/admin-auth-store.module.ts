@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {StoreModule} from "@ngrx/store";
 import {adminAuthReducer, ADMIN_AUTH_FEATURE_NAME} from "./store/admin-auth.reducer";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {EffectsModule} from "@ngrx/effects";
 import {AdminAuthEffects} from "./store/admin-auth.effects";
 import {JwtModule} from "@auth0/angular-jwt";
+import {AdminAuthInterceptor} from "./interceptors/admin-auth.interceptor";
 
 
 
@@ -26,6 +27,13 @@ import {JwtModule} from "@auth0/angular-jwt";
     EffectsModule.forFeature([
       AdminAuthEffects
     ])
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AdminAuthInterceptor,
+      multi: true
+    }
   ]
 })
 export class AdminAuthStoreModule { }

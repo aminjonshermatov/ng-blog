@@ -4,16 +4,23 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {AuthData} from "../store/admin-auth.reducer";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {select, Store} from "@ngrx/store";
+import {getAccessToken} from "../store/admin-auth.selectors";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminAuthService {
+  public accessToken = '';
 
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly jwtHelperService: JwtHelperService
-  ) { }
+    private readonly jwtHelperService: JwtHelperService,
+    private readonly store$: Store
+  ) {
+    this.store$.pipe(select(getAccessToken))
+      .subscribe(accessToken => this.accessToken = accessToken || '');
+  }
 
   public login(body: { login: string, password: string }) {
     return this.httpClient.post<AuthData>(
