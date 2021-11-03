@@ -24,4 +24,16 @@ export class AdminAuthService {
       }))
     );
   }
+
+  public refreshToken() {
+    return this.httpClient.post<AuthData>(
+      `http://localhost:3000/auth/refresh`,
+      {}
+    ).pipe(
+      map(res => ({
+        ...res,
+        ...this.jwtHelperService.decodeToken(res.accessToken)
+      }))
+    );
+  }
 }
