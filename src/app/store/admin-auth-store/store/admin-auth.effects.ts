@@ -13,7 +13,7 @@ import {catchError, distinctUntilChanged, filter, first, map, skip, switchMap, t
 import {AdminAuthService} from "../services/admin-auth.service";
 import {fromEvent, of, timer} from "rxjs";
 import {select, Store} from "@ngrx/store";
-import {getAuthData, isAuth} from "./admin-auth.selectors";
+import {isAuth} from "./admin-auth.selectors";
 import {AuthData} from "./admin-auth.reducer";
 import {Router} from "@angular/router";
 

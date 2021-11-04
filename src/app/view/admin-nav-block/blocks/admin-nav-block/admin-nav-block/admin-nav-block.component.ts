@@ -1,57 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {NestedTreeNode} from "../../../models/nested-tree-node";
-import {of} from "rxjs";
-import {delay} from "rxjs/operators";
-
-const TREE_DATA: NestedTreeNode[] = [
-  {
-    name: 'Content',
-    children: [
-      {
-        name: 'Pages',
-        href: '/admin/grid/content/pages'
-      },
-      {
-        name: 'Posts',
-        href: '/admin/grid/content/posts'
-      },
-      {
-        name: 'Comments',
-        href: '/admin/grid/content/comments'
-      }
-    ],
-  },
-  {
-    name: 'Accounts',
-    icon: 'perm_identity',
-    children: [
-      {
-        name: 'Admins',
-        icon: 'manage_accounts',
-        href: '/admin/grid/account/admins'
-      },
-      {
-        name: 'Users',
-        icon: 'face',
-        href: '/admin/grid/account/users'
-      }
-    ],
-  },
-  {
-    name: 'Settings',
-    icon: 'settings',
-    children: [
-      {
-        name: 'General',
-        href: '/admin/form/settings/general'
-      },
-      {
-        name: 'Catalog',
-        href: '/admin/form/settings/catalog'
-      }
-    ]
-  }
-];
+import {select, Store} from "@ngrx/store";
+import {InitMenu} from "../../../../../store/admin-menu-store/store/admin-menu.actions";
+import {getMenuData} from "../../../../../store/admin-menu-store/store/admin-menu.selectors";
 
 @Component({
   selector: 'app-admin-nav-block',
@@ -60,13 +10,14 @@ const TREE_DATA: NestedTreeNode[] = [
 })
 export class AdminNavBlockComponent implements OnInit {
 
-  data$ = of<NestedTreeNode[]>(TREE_DATA).pipe(
-    delay(500)
-  );
+  data$ = this.store$.pipe(select(getMenuData));
 
-  constructor() { }
+  constructor(
+    private readonly store$: Store
+  ) { }
 
   ngOnInit(): void {
+    this.store$.dispatch(InitMenu());
   }
 
 }
