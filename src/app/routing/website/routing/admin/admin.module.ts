@@ -5,6 +5,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import {AdminFooterBlockModule} from "../../../../view/admin-footer-block/admin-footer-block.module";
 import {AdminHeaderBlockModule} from "../../../../view/admin-header-block/admin-header-block.module";
+import {AdminNavBlockModule} from "../../../../view/admin-nav-block/admin-nav-block.module";
 
 
 
@@ -38,7 +39,8 @@ import {AdminHeaderBlockModule} from "../../../../view/admin-header-block/admin-
         loadChildren: () => import('./routing/form/form.module').then(m => m.FormModule)
       }
     ]),
-    AdminHeaderBlockModule
+    AdminHeaderBlockModule,
+    AdminNavBlockModule
   ]
 })
 export class AdminModule { }
