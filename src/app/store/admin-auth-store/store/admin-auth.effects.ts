@@ -1,6 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {ExtractLoginData, InitAdminAuth, Login, LoginFailed, LoginSuccess, LogoutSuccess} from "./admin-auth.actions";
+import {
+  ExtractLoginData,
+  InitAdminAuth,
+  Login,
+  LoginFailed,
+  LoginSuccess,
+  Logout,
+  LogoutSuccess
+} from "./admin-auth.actions";
 import {catchError, distinctUntilChanged, filter, first, map, skip, switchMap, tap} from "rxjs/operators";
 import {AdminAuthService} from "../services/admin-auth.service";
 import {fromEvent, of, timer} from "rxjs";
@@ -91,4 +99,12 @@ export class AdminAuthEffects {
       );
     })
   ), { dispatch: false });
+
+  logout$ = createEffect(() => this.actions$.pipe(
+    ofType(Logout),
+    map(() => {
+      localStorage.removeItem('authData');
+      return LogoutSuccess();
+    })
+  ))
 }
