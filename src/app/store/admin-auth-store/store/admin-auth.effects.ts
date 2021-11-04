@@ -1,19 +1,21 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {ExtractLoginData, InitAdminAuth, Login, LoginFailed, LoginSuccess, LogoutSuccess} from "./admin-auth.actions";
-import {catchError, filter, first, map, switchMap, tap} from "rxjs/operators";
+import {catchError, distinctUntilChanged, filter, first, map, skip, switchMap, tap} from "rxjs/operators";
 import {AdminAuthService} from "../services/admin-auth.service";
 import {fromEvent, of, timer} from "rxjs";
 import {select, Store} from "@ngrx/store";
-import {isAuth} from "./admin-auth.selectors";
+import {getAuthData, isAuth} from "./admin-auth.selectors";
 import {AuthData} from "./admin-auth.reducer";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class AdminAuthEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly adminAuthService: AdminAuthService,
-    private readonly store$: Store
+    private readonly store$: Store,
+    private readonly router: Router
   ) { }
 
   login$ = createEffect(() => this.actions$.pipe(
@@ -77,4 +79,16 @@ export class AdminAuthEffects {
     switchMap(() => fromEvent(window, 'storage')),
     map(() => ExtractLoginData())
   ));
+
+  listerAuthorizeEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(InitAdminAuth),
+    switchMap(() => this.adminAuthService.isAuth$),
+    distinctUntilChanged(),
+    skip(1),
+    tap(isAuthorized => {
+      this.router.navigateByUrl(
+        isAuthorized ? '/admin' : '/admin/auth/login'
+      );
+    })
+  ), { dispatch: false });
 }

@@ -32,16 +32,10 @@ export class AdminGuestGuard implements CanActivate, CanLoad {
     return this._getIsGuest();
   }
 
-  private _getIsGuest(): Observable<boolean> {
+  private _getIsGuest(): Observable<boolean | UrlTree> {
     return this.adminAuthService.isGuest$.pipe(
       first(),
-      map(isGuest => {
-        if (!isGuest) {
-          this.router.navigateByUrl('/admin');
-        }
-
-        return isGuest;
-      })
+      map(isGuest => isGuest ? isGuest : this.router.parseUrl('/admin'))
     );
   }
 }
