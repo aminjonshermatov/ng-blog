@@ -31,16 +31,10 @@ export class AdminAuthGuard implements CanActivate, CanLoad {
     return this._getIsAuth();
   }
 
-  private _getIsAuth(): Observable<boolean> {
+  private _getIsAuth(): Observable<boolean | UrlTree> {
     return this.adminAuthService.isAuth$.pipe(
       first(),
-      map(isAuth => {
-        if (!isAuth) {
-          this.router.navigateByUrl('/admin/auth/login');
-        }
-
-        return isAuth;
-      })
+      map(isAuth => isAuth ? isAuth : this.router.createUrlTree(['/admin', 'auth', 'login']))
     );
   }
 }
