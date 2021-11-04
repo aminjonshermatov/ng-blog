@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {AuthData} from "../store/admin-auth.reducer";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AdminAuthService {
     private readonly jwtHelperService: JwtHelperService
   ) { }
 
-  public login(body: { login: string, password: string }) {
+  public login(body: { login: string, password: string }): Observable<AuthData> {
     return this.httpClient.post<AuthData>(
       `http://localhost:3000/auth/login`,
       body
@@ -25,7 +26,7 @@ export class AdminAuthService {
     );
   }
 
-  public refreshToken() {
+  public refreshToken(): Observable<AuthData> {
     return this.httpClient.post<AuthData>(
       `http://localhost:3000/auth/refresh`,
       {}
