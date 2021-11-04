@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {MatTreeNestedDataSource} from "@angular/material/tree";
-import {NestedTreeNode} from "../../models/nested-tree-node";
+import {NestedTreeNode} from "../../../../store/admin-menu-store/store/admin-menu.reducer";
 
 @Component({
   selector: 'app-nested-tree-ui',
