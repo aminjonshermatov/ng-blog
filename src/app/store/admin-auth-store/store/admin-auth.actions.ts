@@ -27,3 +27,7 @@ export const LogoutSuccess = createAction(
 export const ExtractLoginData = createAction(
   '[Admin Auth] extract login data'
 );
+
+export const Logout = createAction(
+  '[Admin Auth] Logout'
+);
